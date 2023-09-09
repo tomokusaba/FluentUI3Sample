@@ -1,0 +1,14 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<FluentLabel Typo="Typography.H1">Hello, world!</FluentLabel>
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<div style="width: 150px">
+    <FluentSelect Items="select" TOption="string" Width="100%"/>
+</div>
+
+@code {
+    IQueryable<string> select = new List<string> { "Microsoft MVP for Developer Technologes", "Microsoft MVP for  AI", "Microsoft MVP for  Windows and Devices for IT" }.AsQueryable();
+}

@@ -1,0 +1,116 @@
+﻿@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<FluentLabel Typo="Typography.H1">Weather forecast</FluentLabel>
+
+<FluentLabel Typo="Typography.Subject">This component demonstrates fetching data from the server.</FluentLabel>
+
+@*@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+*@
+@if (forecasts == null)
+{
+    <FluentDataGrid GenerateHeader="GenerateHeaderOption.None" TGridItem="string">
+        <FluentDataGridRow RowType="DataGridRowType.Header">
+            <FluentDataGridCell GridColumn="1" CellType="DataGridCellType.ColumnHeader">Date</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2" CellType="DataGridCellType.ColumnHeader">Temp. (C)</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3" CellType="DataGridCellType.ColumnHeader">Temp. (F)</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4" CellType="DataGridCellType.ColumnHeader">Summary</FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+
+    </FluentDataGrid>
+}
+else
+{
+    <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast">
+        <PropertyColumn Property="@(p => p.Date.ToShortDateString())" Title="Date" />
+        <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)" />
+        <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)" />
+        <PropertyColumn Property="@(p => p.Summary)" Title="Summary" />
+    </FluentDataGrid>
+}
+
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+            await Task.Delay(10);
+            StateHasChanged();
+        }
+    }
+    
+
+    public class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
