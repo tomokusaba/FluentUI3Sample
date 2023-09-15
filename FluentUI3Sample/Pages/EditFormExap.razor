@@ -1,0 +1,32 @@
+﻿@page "/EditFormExap"
+@using FluentUI3Sample.Data;
+<h3>EditFormExap</h3>
+
+<EditForm Model="@data" OnInvalidSubmit="OnInvalidSubmit" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    @*<FluentNumberField @bind-Value="data.Value1" TValue="double" Step=".1" Name="Value1"/>*@
+    <InputNumber @bind-Value="data.Value1" TValue="double" />
+    <FluentNumberField @bind-Value="data.Value2" TValue="decimal" Step="0.1" type="number" />
+    <FluentNumberField @bind-Value="data.Value3" TValue="float" Step="any" />
+    <FluentNumberField @bind-Value="data.Value4" TValue="short" Step="any" />
+    <FluentTextField @bind-Value="data.Value5" />
+<FluentButton Type="ButtonType.Submit" >Submit </FluentButton>
+</EditForm>
+@result
+
+@code {
+    NumberData data = new NumberData();
+    string result = "";
+    private void OnInvalidSubmit()
+    {
+        Console.WriteLine("Invalid Submit");
+        result = "Invalid Submit";
+    }
+
+    private void OnValidSubmit()
+    {
+        Console.WriteLine("Valid Submit");
+        result = "Valid Submit: " + data.Value1;
+    }
+}
