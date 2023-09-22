@@ -2,7 +2,7 @@
 {
     public class Prefectures
     {
-        List<Prefecture> pref = new List<Prefecture>();
+        public List<Prefecture> pref = new();
 
         public Prefectures()
         {
@@ -60,6 +60,11 @@
         public List<Prefecture> GetPrefectures()
         {
             return pref;
+        }
+
+        public Prefectures GetPrefecture(string name)
+        {
+            return (Prefectures)pref.Where(x => x.Name.Contains(name));
         }
     }
 }

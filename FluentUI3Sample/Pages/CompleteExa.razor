@@ -1,0 +1,25 @@
+﻿@page "/CompleteExa"
+@using FluentUI3Sample.Data;
+@using Microsoft.Fast.Components.FluentUI;
+<FluentLabel Typo="Typography.H3">CompleteExa</FluentLabel>
+
+<FluentAutocomplete TOption="string" 
+    OnOptionsSearch="OnOptionsSearch"
+    MaximumOptionsSearch="15"
+@bind-SelectedOptions="Prefectures" />
+
+@if (Prefectures != null &&  Prefectures.Count() != 0)
+{
+    <FluentLabel>Selected: @(String.Join(" - ", Prefectures))</FluentLabel>
+}
+
+@code {
+    Prefectures Prefecture = new Prefectures();
+    IEnumerable<string>? Prefectures = new List<string>();
+
+    private void OnOptionsSearch(OptionsSearchEventArgs<string> e)
+    {
+        var prefecture = Prefecture.GetPrefectures();
+        e.Items = prefecture.Where(x => x.Name.Contains(e.Text, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name).Order();
+    }
+}
