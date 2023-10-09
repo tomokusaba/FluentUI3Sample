@@ -1,9 +1,8 @@
-﻿@page "/gridlongcontents"
+﻿@page "/gridlongtitle"
 @using FluentUI3Sample.Data;
 @inject HttpClient Http
 
-
-<h3>GridLongContents</h3>
+<h3>GridLongTitle</h3>
 
 @if (forecasts == null)
 {
@@ -50,10 +49,17 @@
 else
 {
     <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast">
-        <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" />
-        <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" Tooltip="true" />
-        <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" Class="multiline-text" />
-        <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)なんだけども、とっても長いタイトルにすると省略されて表示されることを確認できると思う！！" />
+        <TemplateColumn>
+            <HeaderCellItemTemplate>
+                <div style="white-space:normal; overflow:auto;">
+                日付なんだけどもとっても長いタイトルにするよ！！！でもこれは折り返されて表示！
+                </div>
+            </HeaderCellItemTemplate>
+            <ChildContent>
+                @context.Date.ToShortDateString()
+            </ChildContent>
+        </TemplateColumn>
+        <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)" />
         <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)" />
         <PropertyColumn Property="@(p => p.Summary)" Title="Summary" />
         <TemplateColumn Title="Actions">
