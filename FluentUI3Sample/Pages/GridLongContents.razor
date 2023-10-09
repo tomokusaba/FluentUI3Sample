@@ -50,6 +50,8 @@
 else
 {
     <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast">
+        <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" />
+        <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" Tooltip="true" />
         <PropertyColumn Property="@(p => p.Date.ToString("gg yyyy年 MM月 dd日 (dddd)gg yyyy年 MM月 dd日 (dddd)"))" Title="Date" Class="multiline-text" />
         <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)" />
         <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)" />
