@@ -20,6 +20,6 @@
     private void OnOptionsSearch(OptionsSearchEventArgs<string> e)
     {
         var prefecture = Prefecture.GetPrefectures();
-        e.Items = prefecture.Where(x => x.Name.Contains(e.Text, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name).Order();
+        e.Items = prefecture.Where(x => x.Name.Contains(e.Text, StringComparison.OrdinalIgnoreCase)).Select(x => x.Name);
     }
 }

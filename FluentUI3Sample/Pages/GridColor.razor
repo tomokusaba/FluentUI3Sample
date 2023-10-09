@@ -1,42 +1,8 @@
-﻿@page "/fetchdata"
+﻿@page "/gridcolor"
 @using FluentUI3Sample.Data;
 @inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
-
-<FluentLabel Typo="Typography.H1">Weather forecast</FluentLabel>
-
-<FluentLabel Typo="Typography.Subject">This component demonstrates fetching data from the server.</FluentLabel>
-
-@*@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-*@
+<h3>GridColor</h3>
 @if (forecasts == null)
 {
     <FluentDataGrid GenerateHeader="GenerateHeaderOption.None" TGridItem="string">
@@ -81,17 +47,44 @@ else
 }
 else
 {
-    <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast">
+    <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast" RowStyle="RowStyle">
         <PropertyColumn Property="@(p => p.Date.ToShortDateString())" Title="Date" />
         <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)" />
         <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)" />
         <PropertyColumn Property="@(p => p.Summary)" Title="Summary" />
+        <TemplateColumn Title="Actions">
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" Title="編集" aria-label="編集" />
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="削除" aria-label="削除" />
+        </TemplateColumn>
     </FluentDataGrid>
 }
 
-
 @code {
     private WeatherForecast[]? forecasts;
+
+    private string RowStyle(WeatherForecast forecast)
+    {
+        if (forecast.TemperatureC > 30)
+        {
+            return "background-color: red;";
+        }
+        else if (forecast.TemperatureC > 20)
+        {
+            return "background-color: yellow;";
+        }
+        else if (forecast.TemperatureC > 10)
+        {
+            return "background-color: green;";
+        }
+        else if (forecast.TemperatureC > 0)
+        {
+            return "background-color: blue;";
+        }
+        else
+        {
+            return "background-color: gray;";
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -102,6 +95,8 @@ else
             StateHasChanged();
         }
     }
-    
+
+}
+@code {
 
 }

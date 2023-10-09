@@ -1,0 +1,4 @@
+﻿::deep fluent-data-grid-cell::part(col-title-text) {
+    overflow: visible!important;
+    white-space: normal!important;
+}
