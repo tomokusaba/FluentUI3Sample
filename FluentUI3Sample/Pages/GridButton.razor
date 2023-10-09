@@ -1,6 +1,7 @@
 ﻿@page "/gridbutton"
 @using FluentUI3Sample.Data;
 @inject HttpClient Http
+@inject IToastService ToastService
 
 <h3>GridButton</h3>
 @if (forecasts == null)
@@ -53,8 +54,8 @@ else
         <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)" />
         <PropertyColumn Property="@(p => p.Summary)" Title="Summary" />
         <TemplateColumn Title="Actions">
-            <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" Title="編集" aria-label="編集" />
-            <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="削除" aria-label="削除" />
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Edit())" Title="編集" aria-label="編集" OnClick="@(() => OnClick(context.Id))" />
+            <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())" Title="削除" aria-label="削除" OnClick="@(()=> OnDelete(context.Id))" />
         </TemplateColumn>
     </FluentDataGrid>
 }
@@ -70,6 +71,16 @@ else
             await Task.Delay(10);
             StateHasChanged();
         }
+    }
+
+    private void OnClick(int id)
+    {
+        ToastService.ShowSuccess($"Edited {id}");
+    }
+
+    private void OnDelete(int id)
+    {
+        ToastService.ShowWarning($"Deleted {id}");
     }
 
 }
